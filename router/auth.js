@@ -17,21 +17,24 @@ router.get("/signin", (req, res) => {
 
 router.get("/signup", (req, res) => {
   res.send("Hello signup from the server Badar");
-  // console.log(req.body);
-  // const obj = JSON.parse('{"name":"John", "age":30, "city":"New York"}');
-  // const data = JSON.parse(req.body);
-  // console.log(obj);
-  // res.send(req.body);
-  // const { name, email, phone, work, password, cpassword } = req.body;
 });
 router.post("/signup", async (req, res) => {
-  console.log(req.body)
   const { name, email, password, cpassword } = req.body;
+  // console.log("data from front end",data)
+  
   try {
-    const user = new userEtijarat({ name, email, password, cpassword });
+    const userExist = await userEtijarat.findOne({ email: email });
+    if (userExist) {
+      return res.status(420).json({ error: "User already exits" });
+    } else if (password != cpassword) {
+      return res.status(420).json({ error: "password don't match" });
+    }else{
+
+    
+    const user = new userEtijarat({ name:name, email:email, password:password, cpassword:cpassword });
     await user.save();
     res.status(201).json({ message: "user registered successfuly" });
-  } catch (err) {
+  } }catch (err) {
     console.log(err);
   }
 });

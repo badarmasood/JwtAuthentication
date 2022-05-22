@@ -4,10 +4,13 @@ var app = express();
 const mongoose = require("mongoose");
 
 require("./db/conn");
+const cors = require("cors");
+app.use(cors({ origin: "*" }));
 app.use(express.json());
+
 app.use(require("./router/auth"));
 
-app.listen(4000, () => {
-  console.log("Server is running at port 4000");
+app.listen(5000, () => {
+  console.log("Server is running at port 5000");
 });
 module.exports = app;
